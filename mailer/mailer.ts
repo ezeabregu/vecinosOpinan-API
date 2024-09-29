@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "vecinosopinan@gmail.com",
-    pass: "v3c1n0s0p1n4n",
+    pass: "xcui ubiy gxyx qbjb",
   },
   from: "vecinosopinan@gmail.com",
   tls: {
@@ -20,6 +20,9 @@ export const sendEmail = async (to: string, code: string): Promise<void> => {
     text: `
             Llegó tu codigo para Vecinos Opinan.
             El código es ${code}
+
+            Gracias,
+            El equipo de Vecinos Opinan
         `,
   };
 
