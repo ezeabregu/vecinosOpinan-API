@@ -21,7 +21,7 @@ export class Server {
   }
   middlewares(): void {
     this.app.use(express.json());
-    this.app.use(cors());
+    this.app.use(cors({ origin: "https://vecinosopinan.vercel.app" }));
   }
   routes(): void {
     this.app.use(this.authPath, authRoutes);
