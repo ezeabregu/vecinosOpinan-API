@@ -1,14 +1,28 @@
 import { Schema, model, Model } from "mongoose";
 
+interface Icomment {
+  id: Number;
+  neighborhood: Number;
+  star: Number;
+  date: Date;
+  comment: String;
+}
+
 export interface IUser {
+  createdAt: Date;
   name: string;
   email: string;
   password: string;
   code?: string;
   verified?: string;
+  comments?: Icomment[];
 }
 
 const UserSchema = new Schema<IUser>({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   name: {
     type: String,
     required: [true, "El nombre es obligatorio."],
@@ -27,6 +41,32 @@ const UserSchema = new Schema<IUser>({
   verified: {
     type: Boolean,
     default: false,
+  },
+  comments: {
+    type: [
+      {
+        id: {
+          type: Number,
+          required: true,
+        },
+        neighborhood: {
+          type: Number,
+          required: true,
+        },
+        star: {
+          type: Number,
+          required: true,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
 });
 
