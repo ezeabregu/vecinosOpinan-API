@@ -50,3 +50,45 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     });
   }
 };
+
+export const verifyUser = async (req: Request, res: Response) => {
+  const { email, code } = req.body;
+  try {
+    const usuario = await User.findOne({ email });
+    if (!usuario) {
+      res.status(404).json({
+        msg: "No se encontró el mail en la Base de Datos.",
+        usuario,
+      });
+      return;
+    }
+    const token = await createJWT(usuario.id);
+    if (usuario.verified) {
+      res.status(400).json({
+        msg: "El usuario ya está correctamente verificado.",
+        usuario,
+        token,
+      });
+      return;
+    }
+    if (code !== usuario.code) {
+      res.status(401).json({
+        msg: "El código ingresado no es correcto.",
+        usuario,
+      });
+      return;
+    }
+    await User.findOneAndUpdate({ email }, { verified: true });
+    res.status(200).json({
+      msg: "Usuario verificado con éxito.",
+      usuario,
+      token,
+    });
+    await usuario.save();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Error en el servidor",
+    });
+  }
+};

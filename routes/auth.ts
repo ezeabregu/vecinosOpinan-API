@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register } from "../controllers/auth";
+import { login, register, verifyUser } from "../controllers/auth";
 import { check } from "express-validator";
 import { collectErrors } from "../middlewares/collectErrors";
 import { mailExist } from "../helpers/validationsDB";
@@ -32,6 +32,17 @@ router.post(
     collectErrors,
   ],
   login
+);
+
+router.patch(
+  "/verify",
+  [
+    check("email", "El correo electrónico es obligatorio").not().isEmpty(),
+    check("email", "El correo electrónico no es válido").isEmail(),
+    check("code").not().isEmpty(),
+    collectErrors,
+  ],
+  verifyUser
 );
 
 export default router;
