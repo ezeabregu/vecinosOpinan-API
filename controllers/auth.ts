@@ -107,6 +107,7 @@ export const comment = async (req: Request, res: Response) => {
       { email },
       { comments: [idNeighborhood, rating, comment] }
     );
+    await usuario.save();
     res.status(202).json({
       usuario,
     });
