@@ -2,8 +2,8 @@ import { Schema, model, Model } from "mongoose";
 
 interface Icomment {
   id: Number;
-  neighborhood: Number;
-  star: Number;
+  idNeighborhood: Number;
+  rating: Number;
   date: Date;
   comment: String;
 }
@@ -49,11 +49,11 @@ const UserSchema = new Schema<IUser>({
           type: Number,
           required: true,
         },
-        neighborhood: {
+        idNeighborhood: {
           type: Number,
           required: true,
         },
-        star: {
+        rating: {
           type: Number,
           required: true,
         },

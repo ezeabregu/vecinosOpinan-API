@@ -92,3 +92,28 @@ export const verifyUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const comment = async (req: Request, res: Response) => {
+  const { email, idNeighborhood, rating, comment } = req.body;
+  try {
+    const usuario = await User.findOne({ email });
+    if (!usuario) {
+      res.status(404).json({
+        msg: "No se encontró el mail en la DB.",
+      });
+      return;
+    }
+    await User.findOneAndUpdate(
+      { email },
+      { comments: [idNeighborhood, rating, comment] }
+    );
+    res.status(202).json({
+      usuario,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Error en el servidor.",
+    });
+  }
+};
