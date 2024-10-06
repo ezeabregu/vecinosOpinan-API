@@ -105,7 +105,7 @@ export const comment = async (req: Request, res: Response) => {
     }
     await User.findOneAndUpdate(
       { email },
-      { comments: [idNeighborhood, rating, comment] }
+      { comments: [idNeighborhood, rating, Date.now(), comment] }
     );
     await usuario.save();
     res.status(202).json({

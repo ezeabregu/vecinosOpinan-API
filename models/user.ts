@@ -1,7 +1,7 @@
 import { Schema, model, Model } from "mongoose";
 
 interface Icomment {
-  id: Number;
+  //id: Number;
   idNeighborhood: Number;
   rating: Number;
   date: Date;
