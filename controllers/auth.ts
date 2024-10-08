@@ -98,23 +98,18 @@ export const comment = async (req: Request, res: Response) => {
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
-      res.status(404).json({
-        msg: "No se encontró el mail en la DB.",
-      });
-      return;
-    }
-    await User.findOneAndUpdate(
-      { email },
-      { comments: [idNeighborhood, rating, Date.now(), comment] }
-    );
-    await usuario.save();
-    res.status(202).json({
-      usuario,
+      return res.status(404).json({ msg: "No se encontró el mail en la DB." });
+    } // Agregar el nuevo comentario al arreglo de comentarios
+    usuario?.comments?.push({
+      idNeighborhood,
+      rating,
+      date: new Date(),
+      comment,
     });
+    await usuario.save(); // Guardar los cambios
+    res.status(202).json({ usuario });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      msg: "Error en el servidor.",
-    });
+    console.error(error);
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
