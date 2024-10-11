@@ -56,7 +56,7 @@ const UserSchema = new Schema<IUser>({
         rating: {
           type: Number,
           required: true,
-        },
+        },  
         date: {
           type: Date,
           default: Date.now,
