@@ -122,3 +122,22 @@ export const commentUser = async (
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
+
+export const userComments = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    const usuario = await User.findOne({ email });
+    if (!usuario) {
+      res.status(404).json({ msg: "No se encontró el mail en la DB." });
+      return;
+    }
+    const query = { user: usuario };
+    const commentsUser = await User.find(query);
+    res.status(200).json({
+      data: [...commentsUser],
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};

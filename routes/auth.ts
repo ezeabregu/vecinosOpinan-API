@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { login, register, verifyUser, commentUser } from "../controllers/auth";
+import {
+  login,
+  register,
+  verifyUser,
+  commentUser,
+  userComments,
+} from "../controllers/auth";
 import { check } from "express-validator";
 import { collectErrors } from "../middlewares/collectErrors";
 import { mailExist } from "../helpers/validationsDB";
@@ -56,5 +62,7 @@ router.patch(
   ],
   commentUser
 );
+
+router.get("/userComments", [collectErrors], userComments);
 
 export default router;
