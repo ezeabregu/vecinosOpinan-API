@@ -124,7 +124,7 @@ export const commentUser = async (
 };
 
 export const userComments = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const { email } = req.query;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
