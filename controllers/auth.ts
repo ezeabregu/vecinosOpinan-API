@@ -93,14 +93,17 @@ export const verifyUser = async (req: Request, res: Response) => {
   }
 };
 
-export const comment = async (req: Request, res: Response) => {
+export const commentUser = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const { email, idNeighborhood, rating, comment } = req.body;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
       return res.status(404).json({ msg: "No se encontró el mail en la DB." });
     } // Agregar el nuevo comentario al arreglo de comentarios
-    usuario?.comments?.push({
+    usuario.comments?.push({
       idNeighborhood,
       rating,
       date: new Date(),

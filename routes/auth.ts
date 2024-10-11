@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register, verifyUser, comment } from "../controllers/auth";
+import { login, register, verifyUser, commentUser } from "../controllers/auth";
 import { check } from "express-validator";
 import { collectErrors } from "../middlewares/collectErrors";
 import { mailExist } from "../helpers/validationsDB";
@@ -54,7 +54,7 @@ router.patch(
     check("comment").not().isEmpty(),
     collectErrors,
   ],
-  comment
+  commentUser
 );
 
 export default router;
