@@ -45,10 +45,10 @@ const UserSchema = new Schema<IUser>({
   comments: {
     type: [
       {
-        id: {
-          type: Number,
-          required: true,
-        },
+        // id: {
+        //   type: Number,
+        //   required: true,
+        // },
         idNeighborhood: {
           type: Number,
           required: true,

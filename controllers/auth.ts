@@ -96,13 +96,19 @@ export const verifyUser = async (req: Request, res: Response) => {
 export const commentUser = async (
   req: Request,
   res: Response
-): Promise<any> => {
+): Promise<void> => {
   const { email, idNeighborhood, rating, comment } = req.body;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
-      return res.status(404).json({ msg: "No se encontró el mail en la DB." });
-    } // Agregar el nuevo comentario al arreglo de comentarios
+      res.status(404).json({ msg: "No se encontró el mail en la DB." });
+      return;
+    }
+
+    if (!usuario.comments) {
+      usuario.comments = []; // Inicializa comments si no está definido
+    }
+
     usuario.comments.push({
       idNeighborhood,
       rating,
@@ -110,7 +116,7 @@ export const commentUser = async (
       comment,
     });
     await usuario.save(); // Guardar los cambios
-    res.status(202).json({ usuario });
+    res.status(202).json({ msg: "Comentario guardado con éxito.", usuario });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
