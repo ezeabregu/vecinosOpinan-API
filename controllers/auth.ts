@@ -103,7 +103,7 @@ export const commentUser = async (
     if (!usuario) {
       return res.status(404).json({ msg: "No se encontró el mail en la DB." });
     } // Agregar el nuevo comentario al arreglo de comentarios
-    usuario.comments?.push({
+    usuario.comments.push({
       idNeighborhood,
       rating,
       date: new Date(),
