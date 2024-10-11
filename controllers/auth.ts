@@ -131,10 +131,8 @@ export const userComments = async (req: Request, res: Response) => {
       res.status(404).json({ msg: "No se encontró el mail en la DB." });
       return;
     }
-    const query = { user: usuario };
-    const commentsUser = await User.find(query);
     res.status(200).json({
-      data: [...commentsUser],
+      comments: usuario.comments,
     });
   } catch (error) {
     console.error(error);
