@@ -97,7 +97,7 @@ export const commentUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, idNeighborhood, rating, comment } = req.body;
+  const { email, idNeighborhood, rating, comment, username } = req.body;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
@@ -114,6 +114,7 @@ export const commentUser = async (
       rating,
       date: new Date(),
       comment,
+      username,
     });
     await usuario.save(); // Guardar los cambios
     res.status(202).json({ msg: "Comentario guardado con éxito.", usuario });
@@ -137,5 +138,27 @@ export const userComments = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
+
+export const commentFind = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { idNeighborhood } = req.params;
+    const comentarios = await User.find({ idNeighborhood });
+
+    if (!comentarios.length) {
+      return res
+        .status(404)
+        .json({ message: "No se encontraron comentarios para este barrio." });
+    }
+
+    res.status(200).json({ comments: comentarios });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener los comentarios.", error });
   }
 };

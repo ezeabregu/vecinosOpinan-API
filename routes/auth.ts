@@ -5,6 +5,7 @@ import {
   verifyUser,
   commentUser,
   userComments,
+  commentFind,
 } from "../controllers/auth";
 import { check } from "express-validator";
 import { collectErrors } from "../middlewares/collectErrors";
@@ -64,5 +65,7 @@ router.patch(
 );
 
 router.get("/userComments", [collectErrors], userComments);
+
+router.get("/commentFind", [collectErrors], commentFind);
 
 export default router;
