@@ -147,7 +147,7 @@ export const commentFind = async (
 ): Promise<any> => {
   try {
     const { idNeighborhood } = req.params;
-    const comentarios = await User.find({ idNeighborhood });
+    const comentarios = await User.find({ idNeighborhood }).populate("usuario");
 
     if (!comentarios.length) {
       return res
