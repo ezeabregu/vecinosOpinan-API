@@ -147,8 +147,12 @@ export const commentFind = async (
 ): Promise<any> => {
   try {
     const { idNeighborhood } = req.params;
-    const comentarios = await User.find({ idNeighborhood }).populate(
-      "comments"
+    const usuarios = await User.find();
+
+    const comentarios = usuarios.flatMap((usuario) =>
+      usuario.comments?.filter(
+        (comment) => comment.idNeighborhood === idNeighborhood
+      )
     );
 
     if (!comentarios.length) {
