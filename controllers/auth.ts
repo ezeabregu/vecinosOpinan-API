@@ -151,7 +151,7 @@ export const commentFind = async (
 
     const comentarios = usuarios.flatMap((usuario) =>
       usuario.comments?.filter(
-        (comment) => comment.idNeighborhood === idNeighborhood
+        (comment) => Number(comment.idNeighborhood) === Number(idNeighborhood)
       )
     );
 
