@@ -146,7 +146,7 @@ export const commentFind = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { idNeighborhood } = req.params;
+    const { idNeighborhood } = req.query;
     const usuarios = await User.find();
 
     const comentarios = usuarios.flatMap((usuario) =>
