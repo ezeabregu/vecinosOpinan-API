@@ -116,7 +116,7 @@ export const commentUser = async (
       comment,
     });
     await usuario.save(); // Guardar los cambios
-    res.status(202).json({ msg: "Comentario guardado con éxito." });
+    res.status(202).json({ msg: "Comentario guardado con éxito.",usuario });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
