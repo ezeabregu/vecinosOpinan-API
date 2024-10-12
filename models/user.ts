@@ -6,7 +6,6 @@ interface Icomment {
   rating: Number;
   date: Date;
   comment: String;
-  username: String;
 }
 
 export interface IUser {
@@ -63,10 +62,6 @@ const UserSchema = new Schema<IUser>({
           default: Date.now,
         },
         comment: {
-          type: String,
-          required: true,
-        },
-        username: {
           type: String,
           required: true,
         },
