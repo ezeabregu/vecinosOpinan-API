@@ -1,12 +1,12 @@
 import { Schema, model, Model } from "mongoose";
 
 interface Icomment {
-  id: String;
-  idNeighborhood: Number;
-  rating: Number;
+  id: string;
+  idNeighborhood: number;
+  rating: number;
   date: Date;
-  comment: String;
-  person: String;
+  comment: string;
+  person: string;
 }
 
 export interface IUser {
@@ -65,7 +65,6 @@ const UserSchema = new Schema<IUser>({
         },
         person: {
           type: String,
-          required: true,
         },
       },
     ],
