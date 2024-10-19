@@ -107,13 +107,13 @@ export const commentUser = async (
       return;
     }
 
-    if (!Array.isArray(usuario.comments)) {
-      usuario.comments = []; // Inicializa comments si no está definido
-    }
-
-    // if (!usuario.comments) {
+    // if (!Array.isArray(usuario.comments)) {
     //   usuario.comments = []; // Inicializa comments si no está definido
     // }
+
+    if (!usuario.comments) {
+      usuario.comments = []; // Inicializa comments si no está definido
+    }
 
     usuario.comments.push({
       id: uuidv4(),
