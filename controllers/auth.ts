@@ -99,7 +99,7 @@ export const commentUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, idNeighborhood, rating, comment } = req.body;
+  const { email, idNeighborhood, rating, comment, person } = req.body;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
@@ -121,6 +121,7 @@ export const commentUser = async (
       rating,
       date: new Date(),
       comment,
+      person,
     });
     await usuario.save(); // Guardar los cambios
     res.status(202).json({ msg: "Comentario guardado con éxito.", usuario });
