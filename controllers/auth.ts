@@ -5,6 +5,7 @@ import { createJWT } from "../helpers/createJWT";
 import randomsting from "randomstring";
 import { sendEmail } from "../mailer/mailer";
 import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {
   const { name, email, password }: IUser = req.body;
@@ -209,6 +210,7 @@ export const commentDelete = async (
       }
     }
   } catch (error) {
+    console.error("Error en commentDelete:", error);
     res
       .status(500)
       .json({ message: "Error al eliminar el comentario.", error });
