@@ -69,6 +69,6 @@ router.get("/userComments", [collectErrors], userComments);
 
 router.get("/commentFind", [collectErrors], commentFind);
 
-router.delete("commentDelete", [collectErrors], commentDelete);
+router.delete("/commentDelete", [collectErrors], commentDelete);
 
 export default router;
