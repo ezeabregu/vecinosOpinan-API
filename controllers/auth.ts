@@ -181,6 +181,15 @@ export const commentDelete = async (
   try {
     const { id, email } = req.query;
     const usuario = await User.findOne({ email });
+
+    if (!usuario) {
+      res.status(404).json({
+        msg: "No se encontró el mail en la Base de Datos.",
+        usuario,
+      });
+      return;
+    }
+
     if (usuario) {
       if (Array.isArray(usuario.comments)) {
         const commentIndex = usuario.comments?.findIndex(
@@ -198,8 +207,6 @@ export const commentDelete = async (
           .status(400)
           .json({ message: "El campo comments no es un arreglo." });
       }
-    } else {
-      return res.status(404).json({ message: "Usuario no encontrado." });
     }
   } catch (error) {
     res
