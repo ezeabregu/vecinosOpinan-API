@@ -4,6 +4,7 @@ import bcryptjs from "bcryptjs";
 import { createJWT } from "../helpers/createJWT";
 import randomsting from "randomstring";
 import { sendEmail } from "../mailer/mailer";
+import { v4 as uuidv4 } from "uuid";
 
 export const register = async (req: Request, res: Response) => {
   const { name, email, password }: IUser = req.body;
@@ -105,18 +106,23 @@ export const commentUser = async (
       return;
     }
 
-    if (!usuario.comments) {
+    if (!Array.isArray(usuario.comments)) {
       usuario.comments = []; // Inicializa comments si no está definido
     }
 
+    // if (!usuario.comments) {
+    //   usuario.comments = []; // Inicializa comments si no está definido
+    // }
+
     usuario.comments.push({
+      id: uuidv4(),
       idNeighborhood,
       rating,
       date: new Date(),
       comment,
     });
     await usuario.save(); // Guardar los cambios
-    res.status(202).json({ msg: "Comentario guardado con éxito.",usuario });
+    res.status(202).json({ msg: "Comentario guardado con éxito.", usuario });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
@@ -165,5 +171,39 @@ export const commentFind = async (
     res
       .status(500)
       .json({ message: "Error al obtener los comentarios.", error });
+  }
+};
+
+export const commentDelete = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { id, email } = req.params;
+    const usuario = await User.findOne({ email });
+    if (usuario) {
+      if (Array.isArray(usuario.comments)) {
+        const commentIndex = usuario.comments?.findIndex(
+          (comment) => comment.id.toString() === id
+        );
+        if (commentIndex > -1) {
+          usuario.comments.splice(commentIndex, 1);
+          await usuario.save();
+          return res.status(200).json({ message: "Comentario eliminado." });
+        } else {
+          return res.status(404).json({ message: "Comentario no encontrado." });
+        }
+      } else {
+        return res
+          .status(400)
+          .json({ message: "El campo comments no es un arreglo." });
+      }
+    } else {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al eliminar el comentario.", error });
   }
 };

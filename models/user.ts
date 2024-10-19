@@ -1,7 +1,7 @@
 import { Schema, model, Model } from "mongoose";
 
 interface Icomment {
-  //id: Number;
+  id: String;
   idNeighborhood: Number;
   rating: Number;
   date: Date;
@@ -45,10 +45,7 @@ const UserSchema = new Schema<IUser>({
   comments: {
     type: [
       {
-        // id: {
-        //   type: Number,
-        //   required: true,
-        // },
+        id: { type: String },
         idNeighborhood: {
           type: Number,
           required: true,
