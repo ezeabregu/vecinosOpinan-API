@@ -179,7 +179,7 @@ export const commentDelete = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { id, email } = req.params;
+    const { id, email } = req.query;
     const usuario = await User.findOne({ email });
     if (usuario) {
       if (Array.isArray(usuario.comments)) {
