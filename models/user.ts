@@ -7,6 +7,8 @@ interface Icomment {
   date: Date;
   comment: string;
   person: string;
+  like: number;
+  dislike: number;
 }
 
 export interface IUser {
@@ -65,6 +67,14 @@ const UserSchema = new Schema<IUser>({
         },
         person: {
           type: String,
+        },
+        like: {
+          type: Number,
+          default: 0,
+        },
+        dislike: {
+          type: Number,
+          default: 0,
         },
       },
     ],

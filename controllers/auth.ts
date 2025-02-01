@@ -99,7 +99,8 @@ export const commentUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, idNeighborhood, rating, comment, person } = req.body;
+  const { email, idNeighborhood, rating, comment, person, like, dislike } =
+    req.body;
   try {
     const usuario = await User.findOne({ email });
     if (!usuario) {
@@ -122,6 +123,8 @@ export const commentUser = async (
       date: new Date(),
       comment,
       person,
+      like,
+      dislike,
     });
     await usuario.save(); // Guardar los cambios
     res.status(202).json({ msg: "Comentario guardado con éxito.", usuario });
@@ -216,4 +219,42 @@ export const commentDelete = async (
       .status(500)
       .json({ message: "Error al eliminar el comentario.", error });
   }
+};
+
+export const likes = async (req: Request, res: Response): Promise<any> => {
+  const { voteType } = req.body; // 'like' o 'dislike'
+  const { userId, commentId } = req.params; // El ID del usuario y el ID del comentario
+
+  // Encontramos al usuario que tiene el comentario
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  // Encontramos el comentario dentro del array de comentarios del usuario
+  const comment = user.comments.find((c) => c.id === commentId);
+
+  if (!comment) {
+    return res.status(404).json({ error: "Comentario no encontrado" });
+  }
+
+  // Dependiendo del tipo de voto, incrementamos el like o dislike
+  if (voteType === "like") {
+    comment.like += 1; // Incrementamos el contador de likes
+  } else if (voteType === "dislike") {
+    comment.dislike += 1; // Incrementamos el contador de dislikes
+  } else {
+    return res.status(400).json({ error: "Tipo de voto no válido" });
+  }
+
+  // Guardamos el usuario con el comentario actualizado
+  await user.save();
+
+  // Respondemos con el número de likes y dislikes actualizados
+  res.json({
+    message: "Voto registrado correctamente",
+    likes: comment.like,
+    dislikes: comment.dislike,
+  });
 };

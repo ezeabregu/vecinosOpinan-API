@@ -7,6 +7,7 @@ import {
   userComments,
   commentFind,
   commentDelete,
+  likes,
 } from "../controllers/auth";
 import { check } from "express-validator";
 import { collectErrors } from "../middlewares/collectErrors";
@@ -70,5 +71,7 @@ router.get("/userComments", [collectErrors], userComments);
 router.get("/commentFind", [collectErrors], commentFind);
 
 router.delete("/commentDelete", [collectErrors], commentDelete);
+
+router.put("/likes", [collectErrors], likes);
 
 export default router;
