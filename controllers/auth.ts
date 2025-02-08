@@ -222,39 +222,64 @@ export const commentDelete = async (
 };
 
 export const likes = async (req: Request, res: Response): Promise<any> => {
-  const { voteType } = req.body; // 'like' o 'dislike'
-  const { commentId } = req.params; // El ID del usuario y el ID del comentario
+  try {
+    const { voteType } = req.body; // 'like' o 'dislike'
+    const { commentId } = req.params; // El ID del usuario y el ID del comentario
 
-  // Encontramos al usuario que tiene el comentario
-  const user = await User.findOne();
+    // Encontramos al usuario que tiene el comentario
+    const users = await User.find();
 
-  if (!user) {
-    return res.status(404).json({ error: "Usuario no encontrado" });
+    if (!users || users.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    let comment;
+    let user;
+
+    // Recorremos cada usuario y sus comentarios
+    for (const u of users) {
+      comment = u.comments?.find((c) => c.id === commentId);
+      if (comment) {
+        user = u;
+        break; // Si encontramos el comentario, salimos del ciclo
+      }
+    }
+
+    if (!comment) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+    }
+
+    // Dependiendo del tipo de voto, incrementamos el like o dislike
+    if (voteType === "like") {
+      comment.like += 1; // Incrementamos el contador de likes
+    } else if (voteType === "dislike") {
+      comment.dislike += 1; // Incrementamos el contador de dislikes
+    } else {
+      return res.status(400).json({ error: "Tipo de voto no válido" });
+    }
+
+    // Verificamos que `user` sea válido antes de guardar
+    if (!user) {
+      return res
+        .status(500)
+        .json({ error: "Usuario no encontrado para actualizar" });
+    }
+
+    // Guardamos el usuario con el comentario actualizado
+    await user.save();
+
+    // Respondemos con el número de likes y dislikes actualizados
+    res.json({
+      message: "Voto registrado correctamente",
+      likes: comment.like,
+      dislikes: comment.dislike,
+    });
+  } catch (error) {
+    // Manejo de errores
+    console.error("Error al procesar el voto:", error);
+    res.status(500).json({
+      error:
+        "Ocurrió un error interno al procesar el voto. Intenta nuevamente más tarde.",
+    });
   }
-
-  // Encontramos el comentario dentro del array de comentarios del usuario
-  const comment = user.comments?.find((comment) => comment.id === commentId);
-
-  if (!comment) {
-    return res.status(404).json({ error: "Comentario no encontrado" });
-  }
-
-  // Dependiendo del tipo de voto, incrementamos el like o dislike
-  if (voteType === "like") {
-    comment.like += 1; // Incrementamos el contador de likes
-  } else if (voteType === "dislike") {
-    comment.dislike += 1; // Incrementamos el contador de dislikes
-  } else {
-    return res.status(400).json({ error: "Tipo de voto no válido" });
-  }
-
-  // Guardamos el usuario con el comentario actualizado
-  await user.save();
-
-  // Respondemos con el número de likes y dislikes actualizados
-  res.json({
-    message: "Voto registrado correctamente",
-    likes: comment.like,
-    dislikes: comment.dislike,
-  });
 };
