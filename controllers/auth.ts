@@ -226,6 +226,9 @@ export const likes = async (req: Request, res: Response): Promise<any> => {
     const { voteType } = req.body; // 'like' o 'dislike'
     const { commentId } = req.params; // El ID del usuario y el ID del comentario
 
+    // Asegúrate de que `commentId` es un string
+    const commentIdString = String(commentId);
+
     // Encontramos al usuario que tiene el comentario
     const users = await User.find();
 
@@ -238,7 +241,7 @@ export const likes = async (req: Request, res: Response): Promise<any> => {
 
     // Recorremos cada usuario y sus comentarios
     for (const u of users) {
-      comment = u.comments?.find((c) => c.id === commentId);
+      comment = u.comments?.find((c) => String(c.id) === commentIdString);
       if (comment) {
         user = u;
         break; // Si encontramos el comentario, salimos del ciclo
