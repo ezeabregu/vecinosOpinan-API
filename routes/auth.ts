@@ -72,6 +72,6 @@ router.get("/commentFind", [collectErrors], commentFind);
 
 router.delete("/commentDelete", [collectErrors], commentDelete);
 
-router.put("/likes", [collectErrors], likes);
+router.patch("/likes", [collectErrors], likes);
 
 export default router;
