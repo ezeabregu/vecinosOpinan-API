@@ -224,7 +224,7 @@ export const commentDelete = async (
 export const likes = async (req: Request, res: Response): Promise<any> => {
   try {
     const { voteType } = req.body; // 'like' o 'dislike'
-    const { commentId } = req.params; // El ID del usuario y el ID del comentario
+    const { commentId } = req.query; // El ID del usuario y el ID del comentario
 
     // Asegúrate de que `commentId` es un string
     const commentIdString = String(commentId);
