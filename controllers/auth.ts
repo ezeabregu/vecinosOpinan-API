@@ -233,7 +233,7 @@ export const likes = async (req: Request, res: Response): Promise<any> => {
   }
 
   // Encontramos el comentario dentro del array de comentarios del usuario
-  const comment = user.comments.find((c) => c.id === commentId);
+  const comment = user.comments?.find((c) => c.id === commentId);
 
   if (!comment) {
     return res.status(404).json({ error: "Comentario no encontrado" });
