@@ -223,17 +223,17 @@ export const commentDelete = async (
 
 export const likes = async (req: Request, res: Response): Promise<any> => {
   const { voteType } = req.body; // 'like' o 'dislike'
-  const { userId, commentId } = req.params; // El ID del usuario y el ID del comentario
+  const { commentId } = req.params; // El ID del usuario y el ID del comentario
 
   // Encontramos al usuario que tiene el comentario
-  const user = await User.findById(userId);
+  const user = await User.findOne();
 
   if (!user) {
     return res.status(404).json({ error: "Usuario no encontrado" });
   }
 
   // Encontramos el comentario dentro del array de comentarios del usuario
-  const comment = user.comments?.find((c) => c.id === commentId);
+  const comment = user.comments?.find((comment) => comment.id === commentId);
 
   if (!comment) {
     return res.status(404).json({ error: "Comentario no encontrado" });
