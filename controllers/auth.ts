@@ -251,7 +251,7 @@ export const likes = async (req: Request, res: Response): Promise<any> => {
     if (!comment) {
       return res.status(404).json({ error: "Comentario no encontrado" });
     }
-
+    console.log("voteType recibido:", voteType);
     // Dependiendo del tipo de voto, incrementamos el like o dislike
     if (voteType === "like") {
       comment.like += 1; // Incrementamos el contador de likes
