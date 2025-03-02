@@ -66,12 +66,41 @@ router.patch(
   commentUser
 );
 
-router.get("/userComments", [collectErrors], userComments);
+router.get(
+  "/userComments",
+  [
+    check("email", "El correo electrónico es obligatorio").not().isEmpty(),
+    collectErrors,
+  ],
+  userComments
+);
 
-router.get("/commentFind", [collectErrors], commentFind);
+router.get(
+  "/commentFind",
+  [check("idNeighborhood").not().isEmpty(), collectErrors],
+  commentFind
+);
 
-router.delete("/commentDelete", [collectErrors], commentDelete);
+router.delete(
+  "/commentDelete",
+  [
+    check("email", "El correo electrónico es obligatorio").not().isEmpty(),
+    check("id", "El ID no puede estar vacio").not().isEmpty(),
+    collectErrors,
+  ],
+  commentDelete
+);
 
-router.patch("/likes", [collectErrors], likes);
+router.patch(
+  "/likes",
+  [
+    check("voteType", "El voto no debe estar vacio").not().isEmpty(),
+    check("commentId", "El id del comentario no debe estar vacio")
+      .not()
+      .isEmpty(),
+    collectErrors,
+  ],
+  likes
+);
 
 export default router;

@@ -60,7 +60,6 @@ export const verifyUser = async (req: Request, res: Response) => {
     if (!usuario) {
       res.status(404).json({
         msg: "No se encontró el mail en la Base de Datos.",
-        usuario,
       });
       return;
     }
@@ -76,7 +75,6 @@ export const verifyUser = async (req: Request, res: Response) => {
     if (code !== usuario.code) {
       res.status(401).json({
         msg: "El código ingresado no es correcto.",
-        usuario,
       });
       return;
     }
@@ -107,10 +105,6 @@ export const commentUser = async (
       res.status(404).json({ msg: "No se encontró el mail en la DB." });
       return;
     }
-
-    // if (!Array.isArray(usuario.comments)) {
-    //   usuario.comments = []; // Inicializa comments si no está definido
-    // }
 
     if (!usuario.comments) {
       usuario.comments = []; // Inicializa comments si no está definido
@@ -190,7 +184,6 @@ export const commentDelete = async (
     if (!usuario) {
       res.status(404).json({
         msg: "No se encontró el mail en la Base de Datos.",
-        usuario,
       });
       return;
     }
@@ -224,7 +217,7 @@ export const commentDelete = async (
 export const likes = async (req: Request, res: Response): Promise<any> => {
   try {
     const { voteType } = req.body; // 'like' o 'dislike'
-    const { commentId } = req.query; // El ID del usuario y el ID del comentario
+    const { commentId } = req.query; // El ID del comentario
 
     // Asegúrate de que `commentId` es un string
     const commentIdString = String(commentId);
